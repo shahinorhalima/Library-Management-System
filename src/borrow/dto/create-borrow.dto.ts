@@ -1,6 +1,8 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateBorrowDto {
+  @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
   studentId: number;
