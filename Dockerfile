@@ -2,18 +2,16 @@ FROM node:24-alpine
 
 WORKDIR /app
 
-RUN npm install -g pnpm
+COPY package*.json ./
 
-COPY package*.json pnpm-lock.yaml ./
-
-RUN pnpm install --frozen-lockfile
+RUN npm ci
 
 COPY . .
 
-RUN pnpm run build
+RUN npx prisma generate
 
-RUN pnpm exec prisma generate
+RUN npm run build
 
 EXPOSE 4000
 
-CMD sh -c "pnpm exec prisma migrate dev && node dist/main"
+CMD sh -c "npx prisma migrate deploy && node dist/main"

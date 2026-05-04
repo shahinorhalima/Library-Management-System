@@ -5,3 +5,80 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User {
+  id       Int     @id @default(autoincrement())
+  name     String?
+  email    String  @unique
+  password String
+
+  createdAt DateTime @default(now())
+}
+
+model Student {
+  id    Int     @id @default(autoincrement())
+  name  String
+  phone String?
+
+  createdAt DateTime @default(now())
+
+  borrows Borrow[]
+}
+
+model Author {
+  id    Int     @id @default(autoincrement())
+  name  String
+  image String?
+  bio   String?
+
+  createdAt DateTime @default(now())
+
+  books Book[]
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  books     Book[]
+  createdAt DateTime @default(now())
+}
+
+model Book {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  stock Int    @default(1)
+
+  summary String?
+
+  authorId Int
+  author   Author @relation(fields: [authorId], references: [id])
+
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  borrows Borrow[]
+}
+
+model Borrow {
+  id        Int @id @default(autoincrement())
+  studentId Int
+  bookId    Int
+
+  borrowDate DateTime  @default(now())
+  dueDate    DateTime?
+  returnDate DateTime?
+
+  status String @default("BORROWED")
+
+  student Student @relation(fields: [studentId], references: [id])
+  book    Book    @relation(fields: [bookId], references: [id])
+}
+
+enum BorrowStatus {
+  BORROWED
+  RETURNED
+  OVERDUE
+}

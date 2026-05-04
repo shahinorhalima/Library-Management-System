@@ -1,18 +1,18 @@
 services:
-  app:
-    build: .
-    ports:
-      - '4000:4000'
-    volumes:
-      - .:/app
-      - /app/node_modules
-    environment:
-      - DATABASE_URL=postgresql://admin:admin@postgres:5432/library_management
-      - NODE_ENV=development
-    depends_on:
-      postgres:
-        condition: service_healthy
-    command: sh -c "npx prisma migrate deploy && node dist/main"
+  # app:
+  #   build: .
+  #   ports:
+  #     - '4000:4000'
+  #   volumes:
+  #     - .:/app
+  #     - /app/node_modules
+  #   environment:
+  #     - DATABASE_URL=postgresql://admin:admin@postgres:5432/library_management
+  #     - NODE_ENV=development
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   command: sh -c "npx prisma migrate deploy && npm run start:dev"
 
   postgres:
     image: postgres:16-alpine
